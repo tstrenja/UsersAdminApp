@@ -1,0 +1,48 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager Navigation
+
+<div class="page">
+    @*    <div class="sidebar">
+        <NavMenu />
+    </div> *@
+
+    <main>
+        <div class="top-row px-4" style="justify-content: flex-start;">
+            @if (!ShowUserPage)
+            {
+                <span>
+                    <a href="/logins" style="float:left !important;">Logins</a>
+
+                </span>
+            }
+            else
+            {
+                <span>
+                    <a href="/users" style="float:left !important;">Users</a>
+
+                </span>
+            }
+        </div>  
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
+@code {
+    private string CurrentUrl;
+    private bool ShowUserPage { get; set; } = false;
+    protected override void OnInitialized()
+    {
+        CurrentUrl = Navigation.Uri;
+
+        ShowUserPage = CurrentUrl.Contains("logins") ? true : false; ;
+        
+    }
+}

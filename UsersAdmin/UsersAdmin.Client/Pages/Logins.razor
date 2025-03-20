@@ -1,0 +1,77 @@
+﻿@page "/logins"
+@inherits LoginsComponent
+
+@rendermode InteractiveServer
+<div class="page-container">
+    <div class="div-container">
+        <p>Povijest logiranja:</p>
+        @if (IsLoading)
+        {
+            <p>Loading payments...</p>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Ime</th>
+                        <th>Prezime</th>
+                        <th>Vrijeme</th>
+                        <th>Browser</th> 
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in LogsList)
+                    {
+                        <tr>
+                            <td>@item.User.FirstName</td>
+                            <td>@item.User.LastName</td>
+                            <td>@item.Date</td> 
+                            <td>@item.Browser</td> 
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        <br /> 
+    </div>
+</div>
+  <br />
+  <div class="page-container">
+    <div class="div-container">
+        <p>Unesite novog korisnika</p>
+
+            <EditForm Model="LoginModel" OnValidSubmit="AddOrUpdateLogAsync">
+            <DataAnnotationsValidator />
+            <table>
+                <tr>
+                        <td style="width: 17%;">
+                            <label for="name" style="float:left;">Login</label>
+                        </td>
+                        <td>
+                            <InputText id="name" class="form-control" @bind-Value="LoginModel.Login" />
+                        <ValidationMessage For="@(() => LoginModel.Login )"/>
+                    </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="name" style="float:left;">Lozinka</label>
+                        </td>
+                        <td>
+                            <InputText id="name" class="form-control" @bind-Value="LoginModel.Password" type="password" />
+                        <ValidationMessage For="@(() => LoginModel.Password)" />
+                    </td>
+                    </tr> 
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="submit" class="btn btn-primary">Test login</button> 
+                        </td>
+                    </tr>
+            </table>
+     
+        </EditForm>
+
+    </div>
+    </div>
+ 

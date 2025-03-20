@@ -1,0 +1,102 @@
+﻿@page "/users"
+@inherits UserComponent
+
+@rendermode InteractiveServer
+<div class="page-container">
+    <div class="div-container">
+        <p>Korisnici</p>
+        @if (IsLoading)
+        {
+            <p>Loading payments...</p>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Ime</th>
+                        <th>Prezime</th>
+                        <th>Broj logiranja</th>
+                        <th>Ispravi</th>
+                        <th>Obriši</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in UserList)
+                    {
+                        <tr>
+                            <td>@item.FirstName</td>
+                            <td>@item.LastName</td>
+                            <td>@item.LoginCount</td>
+                            <td> <a href="javascript:void(0);"@onclick="()=>OpenUserDialogAsync(item.Id)">Ispravi</a></td>
+                            <td> <a href="javascript:void(0);" @onclick="()=>DeleteUserAsync((Guid)item.Id)">Obriši</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        <br />
+
+        <a href="javascript:void(0);" @onclick="() => OpenUserDialogAsync()">Dodaj novog korisnika</a><br />
+    </div>
+</div>
+
+@if (ShowUserDialog)
+{<br /><br />
+  <div class="page-container">
+    <div class="div-container">
+        <p>Unesite novog korisnika</p>
+
+            <EditForm Model="UserModel" OnValidSubmit="SaveUserAsync">
+            <DataAnnotationsValidator />
+            <table>
+                <tr>
+                        <td style="width: 17%;">
+                            <label for="name" style="float:left;">Ime</label>
+                        </td>
+                        <td>
+                            <InputText id="name" class="form-control" @bind-Value="UserModel.FirstName" />
+                            <ValidationMessage For="@(() => UserModel.FirstName)" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="name" style="float:left;">Prezime</label>
+                        </td>
+                        <td>
+                            <InputText id="name" class="form-control" @bind-Value="UserModel.LastName" />
+                            <ValidationMessage For="@(() => UserModel.LastName)" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="name" style="float:left;">Login</label>
+                        </td>
+                        <td>
+                            <InputText id="name" class="form-control" @bind-Value="UserModel.UserName" />
+                            <ValidationMessage For="@(() => UserModel.UserName)" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="name" style="float:left;">Lozinka</label>
+                        </td>
+                        <td>
+                            <InputText id="name" class="form-control" type="password" @bind-Value="UserModel.Password" />
+                            <ValidationMessage For="@(() => UserModel.Password)" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="submit" class="btn btn-primary">@(UserModel.Id == null ? "Kreiraj novog korisnika" : "Spremi promjene")</button>
+                            <button @onclick="Cancel" class="btn btn-primary">Odustani</button>
+                        </td>
+                    </tr>
+            </table>
+     
+        </EditForm>
+
+    </div>
+    </div>
+}
